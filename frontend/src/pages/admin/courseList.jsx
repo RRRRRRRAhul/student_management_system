@@ -7,10 +7,13 @@ import {
 } from "../../features/courses/courseSelector";
 import { useNavigate } from "react-router-dom";
 import { updateCourse } from "../../features/courses/courseApi";
+import FilterButtonsCourse from "../../components/admin/FilterButtonsCourse";
+
 
 const CourseList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [statusFilter, setStatusFilter] = useState("all")
   const courses = useSelector(selectCourses);
   const loading = useSelector(selectCourseLoading);
 
@@ -30,6 +33,21 @@ const CourseList = () => {
     dispatch(getCourses());
   };
 
+  const filteredCourses = courses.filter((course) => {
+    if(statusFilter == "active"){
+      return course.is_active;
+    }
+    else if(statusFilter == "inactive"){
+      return !course.is_active;
+    }
+    else{
+      return true
+    }
+  })
+
+  console.log(courses)
+  console.log(filteredCourses)
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -42,8 +60,9 @@ const CourseList = () => {
     <div className="min-h-[calc(100vh-80px)] p-6">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">Courses</h1>
+        <FilterButtonsCourse setStatusFilter={setStatusFilter} statusFilter={statusFilter}/>
 
-        {courses?.length === 0 ? (
+        {filteredCourses?.length === 0 ? (
           <p className="text-gray-500">No courses available.</p>
         ) : (
           <div className="overflow-x-auto bg-white rounded-xl shadow">
@@ -59,7 +78,7 @@ const CourseList = () => {
                 </tr>
               </thead>
               <tbody>
-                {courses.map((course) => (
+                {filteredCourses.map((course) => (
                   <tr key={course.id} className="border-t hover:bg-gray-50">
                     <td className="px-4 py-3 font-medium">{course.name}</td>
                     <td className="px-4 py-3">{course.code}</td>

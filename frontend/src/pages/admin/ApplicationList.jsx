@@ -14,10 +14,12 @@ import {
 } from "../../features/applications/applicationSelector";
 import Loader from "../../components/common/Loader";
 import { useNavigate } from "react-router-dom";
+import FilterButtonsApplication from "../../components/admin/FilterButtonsApplication";
 
 const ApplicationList = () => {
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [statusFilter, setStatusFilter] = useState("all");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const applications = useSelector(selectApplications);
@@ -53,6 +55,21 @@ const ApplicationList = () => {
     setOpen(false);
   };
 
+  console.log(applications);
+
+  const filteredApplications = applications.filter((application) => {
+    if (statusFilter == "approve") {
+      return application.status == "approved";
+    } else if (statusFilter == "rejected") {
+      return application.status == "rejected";
+    } else if (statusFilter == "pending") {
+      return application.status == "pending"
+    }
+    else{
+      return true
+    }
+  });
+
   return (
     <>
       <h1 className="text-2xl font-semibold mb-4">Student Applications</h1>
@@ -60,7 +77,12 @@ const ApplicationList = () => {
       {loading && <Loader />}
       {error && <p className="text-red-500">Error: {error}</p>}
 
-      {applications && !loading && !error && (
+      <FilterButtonsApplication
+        setStatusFilter={setStatusFilter}
+        statusFilter={statusFilter}
+      />
+
+      {filteredApplications && applications && !loading && !error && (
         <div className="overflow-x-auto bg-white rounded shadow">
           <table className="min-w-full border border-gray-200">
             <thead className="bg-gray-100">
@@ -72,9 +94,34 @@ const ApplicationList = () => {
                 <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
+            {filteredApplications.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-12">
+                <div className="bg-gray-100 rounded-full p-4 mb-4">
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 13h6m-3-3v6m-7 4h14a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
 
+                <p className="text-gray-600 text-lg font-medium">
+                  No students found
+                </p>
+                <p className="text-sm text-gray-400 mt-1">
+                  Try changing filters or check back later.
+                </p>
+              </div>
+            )}
             <tbody>
-              {applications.map((app) => (
+              {filteredApplications.map((app) => (
                 <tr key={app.id} className="border-t">
                   <td className="px-4 py-2">{app.full_name}</td>
                   <td className="px-4 py-2">{app.email || "N/A"}</td>

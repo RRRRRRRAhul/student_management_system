@@ -12,12 +12,19 @@ export const loginUser = (credentials) => async (dispatch) => {
       auth: false,
     });
 
+    // Save tokens FIRST
+    localStorage.setItem("accessToken", data.tokens.access);
+    localStorage.setItem("refreshToken", data.tokens.refresh);
+
+    // FETCH FULL USER (THIS WAS MISSING)
+    const user = await fetchFromApi("/auth/user/");
+
     dispatch(
       authSuccess({
-        user: data.user,
+        user, 
         accessToken: data.tokens.access,
         refreshToken: data.tokens.refresh,
-      })
+      }),
     );
   } catch (error) {
     dispatch(authFailure(error.data?.detail || "Login failed"));
@@ -34,12 +41,17 @@ export const registerUser = (userInfo) => async (dispatch) => {
       auth: false,
     });
 
+    localStorage.setItem("accessToken", data.tokens.access);
+    localStorage.setItem("refreshToken", data.tokens.refresh);
+
+    const user = await fetchFromApi("/auth/user/");
+
     dispatch(
       authSuccess({
-        user: data.user,
+        user: user,
         accessToken: data.tokens.access,
         refreshToken: data.tokens.refresh,
-      })
+      }),
     );
   } catch (error) {
     dispatch(authFailure(JSON.stringify(error.data)));
@@ -76,7 +88,7 @@ export const initializeAuth = () => async (dispatch) => {
       authInit({
         user,
         accessToken,
-      })
+      }),
     );
   } catch (error) {
     dispatch(logout());

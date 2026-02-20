@@ -5,9 +5,11 @@ from rest_framework.permissions import IsAuthenticated
 from student.permissions import AdminCreateOnly
 
 class CoursesListCreateView(generics.ListCreateAPIView):
-    queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Course.objects.order_by("id")
 
     def get_permissions(self):
         if self.request.method == "POST":

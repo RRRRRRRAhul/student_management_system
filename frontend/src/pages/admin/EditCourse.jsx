@@ -32,8 +32,12 @@ const EditCourse = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-4">Edit Course</h1>
+    <h1 className="text-2xl font-semibold mb-5 text-center">Edit Course</h1>
+    <div className="flex items-center justify-center">
+      
       <CourseUpdateForm initialData={course} handleSubmit={handleSubmit} />
+    </div>
+      
     </>
   );
 };
