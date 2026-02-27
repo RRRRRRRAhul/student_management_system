@@ -9,11 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { updateCourse } from "../../features/courses/courseApi";
 import FilterButtonsCourse from "../../components/admin/FilterButtonsCourse";
 
-
 const CourseList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [statusFilter, setStatusFilter] = useState("all");
   const courses = useSelector(selectCourses);
   const loading = useSelector(selectCourseLoading);
 
@@ -34,19 +33,14 @@ const CourseList = () => {
   };
 
   const filteredCourses = courses.filter((course) => {
-    if(statusFilter == "active"){
+    if (statusFilter == "active") {
       return course.is_active;
-    }
-    else if(statusFilter == "inactive"){
+    } else if (statusFilter == "inactive") {
       return !course.is_active;
+    } else {
+      return true;
     }
-    else{
-      return true
-    }
-  })
-
-  console.log(courses)
-  console.log(filteredCourses)
+  });
 
   if (loading) {
     return (
@@ -60,7 +54,14 @@ const CourseList = () => {
     <div className="min-h-[calc(100vh-80px)] p-6">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold mb-6 text-gray-800">Courses</h1>
-        <FilterButtonsCourse setStatusFilter={setStatusFilter} statusFilter={statusFilter}/>
+        <button
+          className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer mb-3"
+          onClick={() => navigate("/admin/subject-list")}
+        >See Subject List</button>
+        <FilterButtonsCourse
+          setStatusFilter={setStatusFilter}
+          statusFilter={statusFilter}
+        />
 
         {filteredCourses?.length === 0 ? (
           <p className="text-gray-500">No courses available.</p>

@@ -4,7 +4,7 @@ import { selectSingleCourse } from "../../features/courses/courseSelector";
 import { useDispatch } from "react-redux";
 import { getCourseById } from "../../features/courses/courseApi";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { updateCourse } from "../../features/courses/courseApi";
 import { useNavigate } from "react-router-dom";
 

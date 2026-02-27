@@ -4,7 +4,6 @@ import {
   fetchSingleSubject,
   fetchSubjectFailure,
   fetchSubjectsSuccess,
-  clearSubject,
 } from "./subjectSlice";
 
 
@@ -74,7 +73,7 @@ export const deleteSubject = (id) => async (dispatch) => {
   try {
     dispatch(fetchSubjectStart());
 
-    const data = await fetchFromApi(`/academics/subjects/${id}/`, {
+    await fetchFromApi(`/academics/subjects/${id}/`, {
       method: "DELETE",
     });
 

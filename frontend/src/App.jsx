@@ -13,6 +13,8 @@ import StudentApplicationForm from "./pages/student/StudentApplicationForm";
 import CourseCreate from "./pages/admin/CourseCreate";
 import CourseList from "./pages/admin/courseList";
 import EditCourse from "./pages/admin/EditCourse";
+import SubjectList from "./pages/admin/subjectPages/SubjectList";
+import CreateSubject from "./pages/admin/subjectPages/SubjectCreate";
 
 import {
   Routes,
@@ -60,6 +62,8 @@ const App = () => {
             <Route path="/admin/create-course" element={<CourseCreate />} />
             <Route path="/admin/course-list" element={<CourseList />} />
             <Route path="/admin/course-edit/:id" element={<EditCourse/>}/>
+            <Route path="/admin/subject-list" element={<SubjectList/>}/>
+            <Route path="/admin/subject-create" element={<CreateSubject/>}/>
           </Route>
         </Route>
 
