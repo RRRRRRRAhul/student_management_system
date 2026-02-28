@@ -1,7 +1,7 @@
 # 🎓 Student Management System (Full Stack)
 
 A full-stack Student Management System built with **Django REST Framework** and **React + Redux Toolkit**.  
-The platform supports **JWT authentication**, **student applications**, **admin approval workflow**, and **course management**.
+The platform supports **JWT authentication**, **student applications**, **admin approval workflow**, and **academic management**.
 
 ---
 
@@ -23,9 +23,11 @@ The platform supports **JWT authentication**, **student applications**, **admin 
 - Admin can approve or reject applications
 - Approved applications automatically create students
 
-### 📚 Course Management
-- Create, update, delete courses
-- Assign courses to students
+### 📚 Academic Management
+- Subjects management
+- Exams management
+- Student marks entry with validation
+- Absent students automatically get 0 marks
 
 ### 🖥 Frontend
 - React + Redux Toolkit
@@ -37,13 +39,13 @@ The platform supports **JWT authentication**, **student applications**, **admin 
 
 ## 🛠 Tech Stack
 
-**Frontend**
+### Frontend
 - React
 - Redux Toolkit
 - Tailwind CSS
 - Vite
 
-**Backend**
+### Backend
 - Django
 - Django REST Framework
 - Simple JWT
@@ -91,6 +93,39 @@ The platform supports **JWT authentication**, **student applications**, **admin 
 | GET | `/api/course/{id}/` | Get course details |
 | PATCH | `/api/course/{id}/` | Update course |
 | DELETE | `/api/course/{id}/` | Delete course |
+
+---
+
+### 📘 Subject APIs
+| Method | Endpoint | Description |
+|------|---------|------------|
+| GET | `/api/subjects/` | List all subjects |
+| POST | `/api/subjects/` | Create a subject |
+| GET | `/api/subjects/{id}/` | Get subject details |
+| PUT | `/api/subjects/{id}/` | Update subject |
+| DELETE | `/api/subjects/{id}/` | Delete subject |
+
+---
+
+### 📝 Exam APIs
+| Method | Endpoint | Description |
+|------|---------|------------|
+| GET | `/api/exams/` | List all exams |
+| POST | `/api/exams/` | Create an exam |
+| GET | `/api/exams/{id}/` | Get exam details |
+| PUT | `/api/exams/{id}/` | Update exam |
+| DELETE | `/api/exams/{id}/` | Delete exam |
+
+---
+
+### 📊 Marks APIs
+| Method | Endpoint | Description |
+|------|---------|------------|
+| GET | `/api/marks/` | List all marks |
+| POST | `/api/marks/` | Create marks entry |
+| GET | `/api/marks/{id}/` | Get marks details |
+| PUT | `/api/marks/{id}/` | Update marks |
+| DELETE | `/api/marks/{id}/` | Delete marks |
 
 ---
 
