@@ -15,7 +15,6 @@ const AdminNavbar = () => {
     { label: "Dashboard", to: "/admin/dashboard" },
     { label: "Students", to: "/admin/students" },
     { label: "Applications", to: "/admin/applications" },
-    { label: "Create Course", to: "/admin/create-course" },
     { label: "Courses", to: "/admin/course-list" },
     {
       label: "Logout",

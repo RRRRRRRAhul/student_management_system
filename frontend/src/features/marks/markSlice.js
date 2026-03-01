@@ -44,4 +44,5 @@ export const {
   clearSelectedMark,
 } = markSlice.actions;
 
-export default markSlice.reducer;
+const marksReducer = markSlice.reducer;
+export default marksReducer;

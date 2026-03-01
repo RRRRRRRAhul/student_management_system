@@ -11,7 +11,7 @@ import { fetchFromApi } from "../../service/api";
 export const getMarks = () => async (dispatch) => {
   try {
     dispatch(fetchMarkStart());
-    const data = await fetchFromApi("/marks/");
+    const data = await fetchFromApi("/academics/marks/");
     dispatch(fetchMarksSuccess(data));
   } catch (error) {
     dispatch(fetchMarkFailure(error.message));
@@ -33,7 +33,7 @@ export const getMarkById = (id) => async (dispatch) => {
 export const createMark = (markData) => async (dispatch) => {
   try {
     dispatch(fetchMarkStart());
-    await fetchFromApi("/marks/", {
+    await fetchFromApi("/academics/marks/", {
       method: "POST",
       body: JSON.stringify(markData),
     });
@@ -47,13 +47,15 @@ export const createMark = (markData) => async (dispatch) => {
 export const updateMark = (id, markData) => async (dispatch) => {
   try {
     dispatch(fetchMarkStart());
-    await fetchFromApi(`/marks/${id}/`, {
+    await fetchFromApi(`/academics/marks/${id}/`, {
       method: "PUT",
       body: JSON.stringify(markData),
     });
     dispatch(getMarks());
+    return { success: true };
   } catch (error) {
     dispatch(fetchMarkFailure(error.message));
+    return { success: false };
   }
 };
 
@@ -61,7 +63,7 @@ export const updateMark = (id, markData) => async (dispatch) => {
 export const deleteMark = (id) => async (dispatch) => {
   try {
     dispatch(fetchMarkStart());
-    await fetchFromApi(`/marks/${id}/`, {
+    await fetchFromApi(`/academics/marks/${id}/`, {
       method: "DELETE",
     });
     dispatch(getMarks());

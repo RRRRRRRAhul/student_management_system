@@ -38,33 +38,6 @@ class StudentSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Admission date cannot be in the future")
         return value
 
-    def create(self, validated_data):
-        # 1️ Get logged-in user from context
-        request = self.context.get("request")
-        user = request.user
-
-        # 2️ Ensure one-to-one constraint (one user → one student)
-        if hasattr(user, "student_profile"):
-            raise serializers.ValidationError("This user already has a student profile")
-
-        # 3️ Generate roll number
-        last_roll = Student.objects.aggregate(max_roll=Max("roll_number"))["max_roll"]
-
-        if last_roll:
-            last_number = int(last_roll.split("-")[-1])
-            new_number = last_number + 1
-        else:
-            new_number = 1
-
-        roll_number = f"STU-{date.today().year}-{new_number:04d}"
-
-        # 4️ Create student with backend-controlled fields
-        student = Student.objects.create(
-            user=user, roll_number=roll_number, **validated_data
-        )
-
-        return student
-
 
 class StudentApplicationCreateSerializer(serializers.ModelSerializer):
     class Meta:

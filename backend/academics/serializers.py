@@ -46,7 +46,6 @@ class ExamSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "created_at",
-            "is_published",
         )
 
     def validate_max_marks(self, data):
@@ -61,12 +60,11 @@ class ExamSerializer(serializers.ModelSerializer):
 
 
 class MarksSerializer(serializers.ModelSerializer):
-    student_name = serializers.CharField(
-        source="student.name", read_only=True
-    )
-    exam_type = serializers.CharField(
-        source="exam.exam_type", read_only=True
-    )
+    student_name = serializers.CharField(source="student.name", read_only=True)
+    exam_type = serializers.CharField(source="exam.exam_type", read_only=True)
+    exam_name = serializers.CharField(source="exam.name", read_only=True)
+    subject_name = serializers.CharField(source="exam.subject.name", read_only=True)
+    max_marks = serializers.CharField(source="exam.max_marks", read_only=True)
 
     class Meta:
         model = Marks
@@ -74,9 +72,12 @@ class MarksSerializer(serializers.ModelSerializer):
             "id",
             "student",
             "student_name",
+            "subject_name",
             "exam",
             "exam_type",
+            "exam_name",
             "marks_obtained",
+            "max_marks",
             "is_absent",
             "created_at",
         )
@@ -99,11 +100,10 @@ class MarksSerializer(serializers.ModelSerializer):
         if is_absent:
             validated_data["marks_obtained"] = 0
         else:
-            
+
             if marks_obtained > exam.max_marks:
                 raise serializers.ValidationError(
                     f"Marks cannot exceed {exam.max_marks}."
                 )
 
         return Marks.objects.create(**validated_data)
-        

@@ -33,12 +33,14 @@ export const createApplication = (applicationInfo) => async (dispatch) => {
             body: applicationInfo,
         });
         dispatch(fetchSingleApplicationSuccess(data));
+        return {success: true}
     } catch (error) {
         dispatch(
             fetchSingleApplicationFailure(
                 error.data?.detail || "Failed to create application",
             ),
         );
+        return {success: false, error: error}
     }
 };
 

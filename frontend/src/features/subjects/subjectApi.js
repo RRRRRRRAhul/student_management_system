@@ -55,16 +55,17 @@ export const updateSubject = (id, subjectInfo) => async (dispatch) => {
   try {
     dispatch(fetchSubjectStart());
 
-    await fetchFromApi(`/academics/subjects/${id}/`, {
+    const response = await fetchFromApi(`/academics/subjects/${id}/`, {
       method: "PATCH",
       body: subjectInfo,
     });
 
     dispatch(getSubjects());
+
+    return { success: true, data: response }; // return something
   } catch (error) {
-    dispatch(
-      fetchSubjectFailure(error?.message || "Failed to update subject")
-    );
+    dispatch(fetchSubjectFailure(error?.message || "Failed to update subject"));
+    return { success: false, error };
   }
 };
 

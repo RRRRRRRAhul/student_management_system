@@ -1,18 +1,22 @@
 from django.shortcuts import render
+from rest_framework import serializers
 from rest_framework import generics
 from student.models import Student, StudentApplication
+from course.models import Course
+from academics.models import Subject, Exam, Marks
 from student.serializers import (
     StudentSerializer,
     StudentApplicationCreateSerializer,
     StudentApplicationReadSerializer,
     StudentApplicationAdminApproveSerializer,
 )
+from academics.serializers import SubjectSerializer, ExamSerializer, MarksSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from student.permissions import AdminCreateOnly, IsOwnerStudent
 from rest_framework.views import APIView
 from django.db import transaction
 from rest_framework.response import Response
-from rest_framework import status 
+from rest_framework import status
 from datetime import date, timedelta
 
 
@@ -37,6 +41,7 @@ class StudentDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StudentSerializer
     permission_classes = [IsAuthenticated]
 
+
 class StudentApplicationReadCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -44,14 +49,16 @@ class StudentApplicationReadCreateView(generics.ListCreateAPIView):
         if self.request.method == "POST":
             return StudentApplicationCreateSerializer
         return StudentApplicationReadSerializer
-    
+
     def get_queryset(self):
         user = self.request.user
 
         if user.is_staff:
             return StudentApplication.objects.select_related("user", "course")
-        
-        return StudentApplication.objects.filter(user=user).select_related("user", "course")
+
+        return StudentApplication.objects.filter(user=user).select_related(
+            "user", "course"
+        )
 
 
 class StudentApplicationApproveView(APIView):
@@ -60,14 +67,20 @@ class StudentApplicationApproveView(APIView):
     def post(self, request, pk, *args, **kwargs):
         # 1️ Fetch the application
         try:
-            application = StudentApplication.objects.select_related("user", "course").get(pk=pk)
+            application = StudentApplication.objects.select_related(
+                "user", "course"
+            ).get(pk=pk)
         except StudentApplication.DoesNotExist:
-            return Response({"detail": "Application not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"detail": "Application not found."}, status=status.HTTP_404_NOT_FOUND
+            )
 
         # 2️ Check if already processed
         if application.status != "pending":
-            return Response({"detail": f"Application already {application.status}."},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": f"Application already {application.status}."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # 3️ Validate the admin input
         serializer = StudentApplicationAdminApproveSerializer(data=request.data)
@@ -87,17 +100,17 @@ class StudentApplicationApproveView(APIView):
                 if Student.objects.filter(user=application.user).exists():
                     return Response(
                         {"detail": "Student already exists for this user."},
-                        status=status.HTTP_400_BAD_REQUEST
+                        status=status.HTTP_400_BAD_REQUEST,
                     )
 
                 # Create the actual Student
                 Student.objects.create(
                     user=application.user,
                     name=application.full_name,
-                    email = application.user.email,
+                    email=application.user.email,
                     course=application.course,
                     admission_date=application.admission_date,
-                    is_active=True
+                    is_active=True,
                 )
 
             elif choice == "reject":
@@ -105,4 +118,62 @@ class StudentApplicationApproveView(APIView):
                 application.remarks = remarks
                 application.save()
 
-        return Response({"detail": f"Application {choice}d successfully."}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": f"Application {choice}d successfully."},
+            status=status.HTTP_200_OK,
+        )
+
+
+class SubjectsByStudentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if not hasattr(user, "student_profile"):
+            raise serializers.ValidationError(
+                "Sorry, you are not registered as a student."
+            )
+
+        student = user.student_profile
+        course = student.course
+        subjects = Subject.objects.filter(course=course)
+        serializer = SubjectSerializer(subjects, many=True)
+
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+
+class ExamsByStudentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if not hasattr(user, "student_profile"):
+            raise serializers.ValidationError(
+                "Sorry, you are not registered as a student."
+            )
+        student = user.student_profile
+        course = student.course
+        subjects = Subject.objects.filter(course=course)
+        exams = Exam.objects.filter(subject__in=subjects)
+
+        serializer = ExamSerializer(exams, many=True)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+
+class MarksByStudentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if not hasattr(user, "student_profile"):
+            raise serializers.ValidationError(
+                "Sorry, you are not registered as a student."
+            )
+        student = user.student_profile
+        marks = Marks.objects.filter(
+            student=user.student_profile,
+            exam__subject__course=student.course,
+        )
+
+        serializer = MarksSerializer(marks, many=True)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)

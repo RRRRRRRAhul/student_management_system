@@ -55,8 +55,6 @@ const ApplicationList = () => {
     setOpen(false);
   };
 
-  console.log(applications);
-
   const filteredApplications = applications.filter((application) => {
     if (statusFilter == "approve") {
       return application.status == "approved";

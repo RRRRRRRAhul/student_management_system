@@ -15,6 +15,11 @@ import CourseList from "./pages/admin/courseList";
 import EditCourse from "./pages/admin/EditCourse";
 import SubjectList from "./pages/admin/subjectPages/SubjectList";
 import CreateSubject from "./pages/admin/subjectPages/SubjectCreate";
+import EditSubject from "./pages/admin/subjectPages/EditSubject";
+import ExamList from "./pages/admin/examPages/ExamList";
+import CreateExam from "./pages/admin/examPages/ExamCreate";
+import EditExam from "./pages/admin/examPages/ExamEdit";
+import MarksList from "./pages/admin/marksPages/Marklist";
 
 import {
   Routes,
@@ -64,6 +69,11 @@ const App = () => {
             <Route path="/admin/course-edit/:id" element={<EditCourse/>}/>
             <Route path="/admin/subject-list" element={<SubjectList/>}/>
             <Route path="/admin/subject-create" element={<CreateSubject/>}/>
+            <Route path="/admin/subject-edit/:id" element={<EditSubject/>}/>
+            <Route path="/admin/exam-list" element={<ExamList/>}/>
+            <Route path="/admin/exam-create" element={<CreateExam/>}/>
+            <Route path="/admin/exam-edit/:id" element={<EditExam/>}/>
+            <Route path="/admin/mark-list" element={<MarksList/>}/>
           </Route>
         </Route>
 

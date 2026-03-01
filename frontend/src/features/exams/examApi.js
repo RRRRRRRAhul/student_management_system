@@ -6,7 +6,6 @@ import {
   fetchSingleExam,
 } from "./examSlice";
 
-
 export const getExams = () => async (dispatch) => {
   try {
     dispatch(fetchExamStart());
@@ -55,16 +54,19 @@ export const updateExam = (id, examInfo) => async (dispatch) => {
   try {
     dispatch(fetchExamStart());
 
-    await fetchFromApi(`/academics/exams/${id}/`, {
+    const response = await fetchFromApi(`/academics/exams/${id}/`, {
       method: "PATCH",
       body: examInfo,
     });
 
     dispatch(getExams());
+
+    return { success: true, data: response };
   } catch (error) {
     dispatch(
       fetchExamFailure(error?.message || "Failed to update exam")
     );
+    return { success: false, error };
   }
 };
 
@@ -78,9 +80,12 @@ export const deleteExam = (id) => async (dispatch) => {
     });
 
     dispatch(getExams());
+
+    return { success: true };
   } catch (error) {
     dispatch(
       fetchExamFailure(error?.message || "Failed to delete exam")
     );
+    return { success: false};
   }
 };

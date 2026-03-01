@@ -11,7 +11,6 @@ const StudentApplication = () => {
   const courses = useSelector(selectCourses);
   const user = useSelector(selectAuthUser);
   const student_id = user?.student_id;
-  console.log(student_id);
 
   useEffect(() => {
     dispatch(getCourses());
@@ -23,7 +22,13 @@ const StudentApplication = () => {
       course,
     };
 
-    await dispatch(createApplication(payload));
+    const res = await dispatch(createApplication(payload));
+    if (res.success){
+      alert("Application Submit Succesfully")
+    }
+    else{
+      alert(res.error.data)
+    }
   };
 
   return (

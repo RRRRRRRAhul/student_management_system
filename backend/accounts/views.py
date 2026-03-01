@@ -64,13 +64,16 @@ class UserInfoAPIView(APIView):
         user = request.user
 
         student_id = None
+        course_id = None
         if hasattr(user, "student_profile"):
             student_id = user.student_profile.id
+            course_id = user.student_profile.course.id
 
         return Response({
             "id": user.id,
             "email": user.email,
             "role": user.role,
-            "student_id": student_id
+            "student_id": student_id,
+            "course_id": course_id
         })
 
