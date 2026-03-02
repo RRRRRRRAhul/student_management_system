@@ -71,3 +71,18 @@ export const deleteMark = (id) => async (dispatch) => {
     dispatch(fetchMarkFailure(error.message));
   }
 };
+
+export const marksByStudent = () => async (dispatch) => {
+  try {
+    dispatch(fetchMarkStart());
+
+    const res = await fetchFromApi("/student/marks/");
+
+    dispatch(fetchMarksSuccess(res.data));
+
+    return { success: true };
+  } catch (error) {
+    dispatch(fetchMarkFailure(error?.message || "Failed to fetch marks"));
+    return { success: false, error };
+  }
+};

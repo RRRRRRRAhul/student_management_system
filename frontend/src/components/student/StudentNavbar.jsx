@@ -16,6 +16,7 @@ const StudentNavbar = () => {
     { label: "Dashboard", to: "/student/dashboard" },
     { label: "Profile", to: "/student/profile" },
     { label: "Application", to: "/student/application" },
+    {label: "Subjects", to: "/student/subjects"},
     {
       label: "Logout",
       to: "/login",

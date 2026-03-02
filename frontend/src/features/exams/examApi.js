@@ -89,3 +89,21 @@ export const deleteExam = (id) => async (dispatch) => {
     return { success: false};
   }
 };
+
+export const examsByStudent = () => async (dispatch) => {
+  try{
+    dispatch(fetchExamStart());
+
+    const res = await fetchFromApi("/student/exams/");
+
+    dispatch(fetchExamSuccess(res.data));
+
+    return {success: true}
+  }
+  catch(error){
+    dispatch(
+      fetchExamFailure(error?.message || "Failed to fetch exams")
+    );
+    return { success: false, error};
+  }
+}

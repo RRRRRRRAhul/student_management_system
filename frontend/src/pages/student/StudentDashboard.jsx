@@ -31,12 +31,6 @@ const StudentDashboard = () => {
     }
   }, [dispatch, student?.course, course]);
 
-  console.log({
-    authLoading,
-    user,
-    student_id,
-    student,
-  });
 
   return (
     <>

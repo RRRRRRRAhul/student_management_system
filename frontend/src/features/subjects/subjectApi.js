@@ -85,3 +85,20 @@ export const deleteSubject = (id) => async (dispatch) => {
     );
   }
 };
+
+export const subjectsByStudent = () => async (dispatch) => {
+  try{
+    dispatch(fetchSubjectStart());
+
+    const res = await fetchFromApi("/student/subjects/");
+
+    dispatch(fetchSubjectsSuccess(res.data));
+
+    return({success: true})
+  } catch(error){
+    dispatch(
+      fetchSubjectFailure(error?.message || "Failed to fetch subject")
+    );
+    return({success: false, error})
+  }
+}

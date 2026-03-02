@@ -154,7 +154,7 @@ class ExamsByStudentView(APIView):
         student = user.student_profile
         course = student.course
         subjects = Subject.objects.filter(course=course)
-        exams = Exam.objects.filter(subject__in=subjects)
+        exams = Exam.objects.filter(subject__in=subjects, is_published=True)
 
         serializer = ExamSerializer(exams, many=True)
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)

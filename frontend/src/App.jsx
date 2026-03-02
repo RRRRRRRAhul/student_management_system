@@ -20,6 +20,9 @@ import ExamList from "./pages/admin/examPages/ExamList";
 import CreateExam from "./pages/admin/examPages/ExamCreate";
 import EditExam from "./pages/admin/examPages/ExamEdit";
 import MarksList from "./pages/admin/marksPages/Marklist";
+import StudentSubjectsList from "./pages/student/subjectStudentPage/StudentSubjectList";
+import StudentExamsList from "./pages/student/examsStudentPage/StudentExamsList";
+import StudentMarksList from "./pages/student/marksStudentPage/StudentMarksList";
 
 import {
   Routes,
@@ -58,6 +61,9 @@ const App = () => {
             <Route path="/student/dashboard" element={<StudentDashboard />} />
             <Route path="/student/profile" element={<StudentProfile />} />
             <Route path="/student/application" element={<StudentApplicationForm />} />
+            <Route path="/student/subjects" element={<StudentSubjectsList />} />
+            <Route path="/student/exams" element={<StudentExamsList />} />
+            <Route path="/student/marks" element={<StudentMarksList />} />
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
