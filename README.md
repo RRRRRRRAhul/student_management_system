@@ -129,7 +129,7 @@ The platform supports **JWT authentication**, **student applications**, **admin 
 
 ---
 
-# special APIs for Students
+### 🔐 Student-Exclusive APIs
 | Method | Endpoint | Description |
 |------|---------|------------|
 | GET | `/api/student/subjects/` | Get subjects assigned to the logged-in student |
