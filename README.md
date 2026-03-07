@@ -53,6 +53,43 @@ The platform supports **JWT authentication**, **student applications**, **admin 
 
 ---
 
+## 🧪 Frontend Testing
+
+The frontend includes **unit and component tests** to ensure UI reliability and correct behavior.  
+Testing is implemented using **React Testing Library** and **Vitest**.
+
+### Testing Tools
+- React Testing Library
+- Vitest
+- Jest DOM matchers
+
+### What is Tested
+Tests focus on **user-visible behavior rather than implementation details**, following the recommended testing philosophy.
+
+Examples of tested features:
+
+- Dashboard statistics rendering
+- Application list UI states (data, empty, error)
+- Conditional UI based on application status
+- Form rendering and submission
+- Button interactions
+- Redux-connected component behavior
+
+### Example Test Scenarios
+- Rendering of admin dashboard statistics cards
+- Displaying applications in the admin application list
+- Showing correct UI for approved, rejected, and pending applications
+- Rendering and submitting the course creation form
+- Form inputs and user interactions
+
+### Running Frontend Tests
+
+Run all tests:
+
+bash
+npm run test
+
+---
 ## 📡 API Endpoints
 
 ### 🔐 Authentication APIs
