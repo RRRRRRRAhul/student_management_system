@@ -129,6 +129,29 @@ The platform supports **JWT authentication**, **student applications**, **admin 
 
 ---
 
+### 🔐 Student-Exclusive APIs
+| Method | Endpoint | Description |
+|------|---------|------------|
+| GET | `/api/student/subjects/` | Get subjects assigned to the logged-in student |
+| GET | `/api/student/exams/` | Get exams for the student’s subjects |
+| GET | `/api/student/marks/` | Get marks for the student’s exams |
+
+### ✅ Access Rules
+- User must be authenticated
+- User must have a student profile
+- Students can only see their own data
+- No IDs are passed from frontend
+- Data is filtered server-side using logged-in user
+
+---
+
+## 🔑 Authentication Header
+
+All protected routes require:
+
+```http
+Authorization: Bearer <access_token>
+
 ## 🔑 Authentication Header
 
 All protected routes require:
