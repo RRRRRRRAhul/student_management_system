@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  students: [],        // for admin (list page)
-  student: null,       // single student (profile / edit)
-  loading: false,      // global loading for student ops
-  error: null,         // API errors
+  students: [],        
+  student: null,       
+  loading: false,      
+  error: null,         
 };
 
 const studentSlice = createSlice({

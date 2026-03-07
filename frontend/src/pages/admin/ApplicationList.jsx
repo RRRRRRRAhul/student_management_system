@@ -16,6 +16,7 @@ import Loader from "../../components/common/Loader";
 import { useNavigate } from "react-router-dom";
 import FilterButtonsApplication from "../../components/admin/FilterButtonsApplication";
 
+
 const ApplicationList = () => {
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);

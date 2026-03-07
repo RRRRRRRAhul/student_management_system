@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  applications: [], // admin: list of all applications
-  application: null, // student: single application (own)
-  loading: false, // API loading state
-  error: null, // API errors
+  applications: [], 
+  application: null, 
+  loading: false, 
+  error: null, 
 };
 
 const applicationSlice = createSlice({
@@ -45,8 +45,7 @@ const applicationSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
-    clearApplicationState: (state) => {
-      state.applications = [];
+    clearApplicationState: (state) => {applications = [];
       state.application = null;
       state.loading = false;
       state.error = null;
