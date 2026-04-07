@@ -2,7 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const fetchFromApi = async (
   endpoint,
-  { method = "GET", body = null, auth = true, retry = true } = {}
+  { method = "GET", body = null, auth = true, retry = true } = {},
 ) => {
   const headers = { "Content-Type": "application/json" };
 
@@ -18,12 +18,12 @@ export const fetchFromApi = async (
     body: body ? JSON.stringify(body) : null,
   });
 
-  // ✅ SUCCESS
+  // SUCCESS
   if (response.ok) {
     return response.json().catch(() => null);
   }
 
-  // 🔁 ACCESS TOKEN EXPIRED → REFRESH
+  // ACCESS TOKEN EXPIRED → REFRESH
   if (response.status === 401 && auth && retry) {
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) {
@@ -44,13 +44,13 @@ export const fetchFromApi = async (
 
     const refreshData = await refreshRes.json();
 
-    // 🔐 SAVE NEW TOKENS (VERY IMPORTANT)
+    // SAVE NEW TOKENS (VERY IMPORTANT)
     localStorage.setItem("accessToken", refreshData.access);
     if (refreshData.refresh) {
       localStorage.setItem("refreshToken", refreshData.refresh);
     }
 
-    // 🔁 Retry original request ONCE
+    // Retry original request ONCE
     return fetchFromApi(endpoint, {
       method,
       body,
@@ -63,7 +63,7 @@ export const fetchFromApi = async (
   throw { status: response.status, data };
 };
 
-// 🚪 Centralized logout helper
+// Centralized logout helper
 const forceLogout = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
